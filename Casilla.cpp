@@ -3,7 +3,6 @@
 Casilla::Casilla(int v, bool i) {
 	valor = v;
 	esInicial = i;
-	ocupado = false;
 }
 
 bool Casilla::es_inicial() const {
@@ -11,11 +10,11 @@ bool Casilla::es_inicial() const {
 }
 
 bool Casilla::esta_ocupada() const {
-	return ocupado == true;
+	return valor != 0;
 }
 
 bool Casilla::esta_libre() const {
-	return ocupado == false;
+	return valor == 0;
 }
 
 int Casilla::tiene_valor() const {
@@ -24,10 +23,8 @@ int Casilla::tiene_valor() const {
 
 void Casilla::poner_valor(int v) {
 	valor = v;
-	ocupado = true;
 }
 
 void Casilla::borrar_valor() {
 	valor = 0;
-	ocupado = false;
 }

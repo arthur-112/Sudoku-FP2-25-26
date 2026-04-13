@@ -2,11 +2,11 @@
 
 class Casilla {
 	
-	
 private:
+
 	bool esInicial;
-	bool ocupado;
 	int valor;
+
 public:
 
 	Casilla(int v = 0, bool i = false);
@@ -18,13 +18,4 @@ public:
 
 	void poner_valor(int v);
 	void borrar_valor();
-
-
-
-
-
-
-
-
 };
-

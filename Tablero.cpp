@@ -47,3 +47,7 @@ bool Tablero::es_inicial(Posicion posicion) const {
 bool Tablero::esta_libre(Posicion posicion) const {
 	return tab[posicion.f][posicion.c].esta_libre();
 }
+
+void Tablero::set_dimension(int d) {
+	dim = d;
+}

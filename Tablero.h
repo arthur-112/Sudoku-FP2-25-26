@@ -29,4 +29,6 @@ public:
 	int valor(Posicion posicion) const;
 	bool es_inicial(Posicion posicion) const;
 	bool esta_libre(Posicion posicion) const;
+
+	void set_dimension(int d);
 };
