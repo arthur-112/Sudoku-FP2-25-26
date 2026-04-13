@@ -1,4 +1,5 @@
 #include "Tablero.h"
+#include "Casilla.h"
 
 Tablero::Tablero(int d) {
 	dim = d;
@@ -6,14 +7,6 @@ Tablero::Tablero(int d) {
 
 void Tablero::colocar_valor_inicial(Posicion posicion, int valor) {
 	tab[posicion.f][posicion.c].poner_valor(valor);
-	bool esinicial = tab[posicion.f][posicion.c].es_inicial();
-
-	if (valor == 0) {
-		esinicial = false;
-	}
-	else {
-		esinicial = true;
-	}
 }
 
 void Tablero::asignar_valor(Posicion posicion, int valor) {
