@@ -1,11 +1,8 @@
 #pragma once
 
 class Casilla {
-	
-	
 private:
-	bool esInicial;
-	bool ocupado;
+	bool inicial;
 	int valor;
 public:
 
