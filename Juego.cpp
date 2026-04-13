@@ -10,7 +10,7 @@ Juego::Juego(int dimension = 0) {
 
 
 
-
+// ALoha
 
 bool Juego::posicion_valida(Posicion const& p) const {
 	return tablero.posicion_valida(p);
