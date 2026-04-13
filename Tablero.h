@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Casilla.h"
 
 const int MAX_DIM = 9;
@@ -7,14 +6,10 @@ struct Posicion {
 	int f = -1;
 	int c = -1;
 };
-
 class Tablero {
 private:
-
 	int dim;
 	Casilla tab[MAX_DIM][MAX_DIM];
-
-
 public:
 
 	Tablero(int d = MAX_DIM);
