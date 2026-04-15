@@ -1,11 +1,11 @@
 #include "Juego.h"
 
-Juego::Juego:tablero(int dimension) {     //Se accede al atributo tablero y se le envia la dimension, que en realidad va a parar a la constructora de la propia clase tablero
-	vacias = dimension * dimension;         //Esta es la totalidad de casillas vacias cuando se inicia el programa
+Juego::Juego:tablero(int dimension) {                //Se accede al atributo tablero y se le envia la dimension, que en realidad va a parar a la constructora de la propia clase tablero
+	vacias = dimension * dimension;                 //Esta es la totalidad de casillas vacias cuando se inicia el programa
 }
 void Juego::colocar_valor_inicial(Posicion const& p, int e) {
 	tablero.colocar_valor_inicial(p, e);                 //Delega la tarea en la misma funcion de tablero
-	vacias--;                                       //Reduce la cantidad de casillas vacias
+	vacias--;                                              //Reduce la cantidad de casillas vacias
 }
 bool Juego::asignar_valor(Posicion const& p, int e) {
 	if (esta_libre(p)) {
@@ -15,7 +15,10 @@ bool Juego::asignar_valor(Posicion const& p, int e) {
 	}
 	return false;
 }
-bool Juego::borrar_valor(Posicion const)
+bool Juego::borrar_valor(Posicion const& p) {
+	tablero.borrar_valor(p);
+	vacias
+}
 
 bool Juego::posicion_valida(Posicion const& p) const {
 	return tablero.posicion_valida(p);
