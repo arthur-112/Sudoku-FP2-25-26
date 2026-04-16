@@ -17,7 +17,7 @@ int Casilla::tiene_valor() const {
 	return valor;
 }
 void Casilla::poner_valor(int v) {
-	if(!es_inicial()) valor = v;
+	if (!es_inicial()) valor = v;
 }
 void Casilla::borrar_valor() {
 	if (!es_inicial()) valor = 0;
