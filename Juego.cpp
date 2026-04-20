@@ -3,14 +3,14 @@
 Juego::Juego(int dimension) {
 	tablero.set_dimension(dimension);
 	vacias = tablero.casillas_vacias();
-	for (int i = 0; i < MAX_DIM * MAX_DIM; i++) {
+	for (int i = 0; i < dimension() * dimension(); i++) {
 		bloqueadas.info[i].f = 0;
 		bloqueadas.info[i].c = 0;
 	}
 	bloqueadas.cont = 0;
-	for (int i = 0; i < MAX_DIM; i++) {
-		for (int j = 0; j < MAX_DIM; j++) {
-			for (int k = 1; k < MAX_DIM + 1; k++) {
+	for (int i = 0; i < dimension(); i++) {
+		for (int j = 0; j < dimension(); j++) {
+			for (int k = 1; k < dimension() + 1; k++) {
 				valores[i][j][k].posible = true;
 				valores[i][j][k].num_casillas_culpables = 0;
 			}
@@ -47,21 +47,39 @@ bool Juego::borrar_valor(Posicion const& p) {
 }
 
 void Juego::auto_completar() {
-
+	Posibles posibles;
+	for (int i = 0; i < dimension(); i++) {
+		for (int j = 0; j < dimension(); j++) {
+			Posicion pos = { i, j };
+			if (esta_libre(pos) && valores_posibles(pos,posibles)==1) {
+				for (int k = 0; k < dimension() + 1; i++) {
+					if (posibles[k] == true) {
+						asignar_valor(pos, k);
+					}
+				} 
+			}
+		}
+	}
 
 }
 
 void Juego::reiniciar() {
-
-
-
-
+	Posicion pos;
+	for (int i = 0; i < dimension(); i++) {
+		for (int j = 0; j < dimension(); j++) {
+			pos.f = i;
+			pos.c = j;
+			if (!es_inicial(pos)) {
+				tablero.asignar_valor(pos, 0);
+			}
+		}
+	}
 }
 
 int Juego::valores_posibles(Posicion p, Posibles posibles) const {
 	int contador = 0;
 
-	for (int i = 1; i < MAX_DIM + 1; i++) {
+	for (int i = 1; i < dimension() + 1; i++) {
 		if (valores[p.f][p.c][i].posible == true) {
 			contador++;
 			posibles[i] = true;
@@ -142,7 +160,7 @@ bool Juego::esta_bloqueada(Posicion posicion) const {
 }
 
 void Juego::insertar_bloqueada(Posicion posicion) {
-	if (bloqueadas.cont != MAX_DIM * MAX_DIM) {
+	if (bloqueadas.cont != dimension() * dimension()){
 		bloqueadas.info[bloqueadas.cont] = posicion;
 		bloqueadas.cont++;
 	}
@@ -151,7 +169,7 @@ void Juego::insertar_bloqueada(Posicion posicion) {
 void Juego::propagar_a_casillas_afectadas(Posicion posicion, int valor, bool poniendo) {
 	Posicion nueva_pos;
 
-	for (int i = 0; i < MAX_DIM; i++) {
+	for (int i = 0; i < dimension(); i++) {
 		if (posicion.c == i) {
 
 		}
@@ -163,7 +181,7 @@ void Juego::propagar_a_casillas_afectadas(Posicion posicion, int valor, bool pon
 		}
 	}
 
-	for (int j = 0; j < MAX_DIM; j++) {
+	for (int j = 0; j < dimension(); j++) {
 		if (posicion.f == j) {
 
 		}
@@ -175,7 +193,7 @@ void Juego::propagar_a_casillas_afectadas(Posicion posicion, int valor, bool pon
 		}
 	}
 
-	int dimReg = sqrt(MAX_DIM);
+	int dimReg = sqrt(dimension());
 	int inicio_fila = (posicion.f / dimReg) * dimReg;
 	int inicio_col = (posicion.c / dimReg) * dimReg;
 
