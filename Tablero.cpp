@@ -1,12 +1,12 @@
 #include "Tablero.h"
-#include "Casilla.h"
 
 Tablero::Tablero(int d) {
 	dim = d;
 }
 
 void Tablero::colocar_valor_inicial(Posicion posicion, int valor) {
-	tab[posicion.f][posicion.c].poner_valor(valor);
+	bool es_inicial = (valor != 0);
+	tab[posicion.f][posicion.c] = Casilla(valor, es_inicial);
 }
 
 void Tablero::asignar_valor(Posicion posicion, int valor) {
@@ -43,4 +43,17 @@ bool Tablero::esta_libre(Posicion posicion) const {
 
 void Tablero::set_dimension(int d) {
 	dim = d;
+}
+
+int Tablero::casillas_vacias() const {
+	int contador = 0;
+
+	for (int i = 0; i < MAX_DIM; i++) {
+		for (int j = 0; j < MAX_DIM; j++) {
+			if (tab[i][j].esta_libre()) {
+				contador++;
+			}
+		}
+	}
+	return contador;
 }

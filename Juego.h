@@ -1,34 +1,39 @@
 #pragma once
+
 #include "Tablero.h"
+using Posibles = bool[MAX_DIM + 1];
 
 class Juego {
+
 private:
 
 	Tablero tablero;
 	int vacias;
 
-	struct Bloqueos {                                          // casillas sin valores posibles
+	struct Bloqueos { // casillas sin valores posibles
 		int cont = 0;
 		Posicion info[MAX_DIM * MAX_DIM];
 	};
 
-	Bloqueos bloqueadas;                                        // Guarda las posiciones bloqueadas
+	// Guarda las posiciones bloqueadas
+	Bloqueos bloqueadas;
 
 	bool esta_bloqueada(Posicion posicion) const;
 	void insertar_bloqueada(Posicion posicion);
 
-
-	struct Valor {                                                     // Tipo oculto
+	// Tipo oculto
+	struct Valor {
 		bool posible;
 		int num_casillas_culpables; // > 0 si posible == false; 0 e.o.c.
 	};
 
-	Valor valores[MAX_DIM][MAX_DIM][MAX_DIM + 1];                // Representa los valores posibles en una determinada posición
+	// Representa los valores posibles en una determinada posición
+	Valor valores[MAX_DIM][MAX_DIM][MAX_DIM + 1];
 
-	void propagar_a_casillas_afectadas(Posicion posicion, int valor, Posibles poniendo);
-	void afectar(Posicion posicion, int valor, Posibles poniendo);
+	void propagar_a_casillas_afectadas(Posicion posicion, int valor, bool poniendo);
+	void afectar(Posicion posicion, int valor, bool poniendo);
 
-	void procesar_bloqueos(Posicion posicion, Posibles poniendo);
+	void procesar_bloqueos(Posicion posicion, bool poniendo);
 	void eliminar_bloqueada(Posicion posicion);
 
 public:
@@ -40,7 +45,7 @@ public:
 	bool borrar_valor(Posicion const& p);
 	void auto_completar();
 	void reiniciar();
-	int valores_posibles(Posicion p, Valor valores) const;
+	int valores_posibles(Posicion p, Posibles posibles) const;
 
 	bool terminado() const;
 	bool bloqueado() const;

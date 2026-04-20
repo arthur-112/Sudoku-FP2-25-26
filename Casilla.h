@@ -1,8 +1,12 @@
 #pragma once
 
+#include <cmath>
+
 class Casilla {
+
 private:
-	bool inicial;
+
+	bool esInicial;
 	int valor;
 
 public:
