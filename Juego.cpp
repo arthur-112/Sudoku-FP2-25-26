@@ -51,12 +51,12 @@ void Juego::auto_completar() {
 	for (int i = 0; i < dimension(); i++) {
 		for (int j = 0; j < dimension(); j++) {
 			Posicion pos = { i, j };
-			if (esta_libre(pos) && valores_posibles(pos,posibles)==1) {
+			if (esta_libre(pos) && valores_posibles(pos, posibles) == 1) {
 				for (int k = 0; k < dimension() + 1; i++) {
 					if (posibles[k] == true) {
 						asignar_valor(pos, k);
 					}
-				} 
+				}
 			}
 		}
 	}
@@ -77,17 +77,59 @@ void Juego::reiniciar() {
 }
 
 int Juego::valores_posibles(Posicion p, Posibles posibles) const {
-	int contador = 0;
+	int contador = 9;
 
-	for (int i = 1; i < dimension() + 1; i++) {
-		if (valores[p.f][p.c][i].posible == true) {
-			contador++;
-			posibles[i] = true;
-		}
-		else {
-			posibles[i] = false;
+	//for (int i = 1; i < dimension() + 1; i++) {
+	//	if (valores[p.f][p.c][i].posible == true) {
+	//		contador++;
+	//		posibles[i] = true;
+	//	}
+	//	else {
+	//		posibles[i] = false;
+	//	}
+	//}
+	for (int i = 0; i < dimension(); i++) {
+		Posicion pos;
+		pos.f = p.f;
+		pos.c = i;
+		if (esta_ocupada(pos) {
+			int val = valor(pos);
+			valores[p.f][p.c][val] = false;
+			posibles[val] = false;
+			contador--;
 		}
 	}
+	for (int j = 0; j < dimension(); j++) {
+		Posicion pos;
+		pos.f = j;
+		pos.c = p.c;
+		if (esta_ocupada(pos) {
+			int val = valor(pos);
+			valores[p.f][p.c][val] = false;
+			posibles[val] = false;
+			contador--;
+		}
+	}
+
+
+	int dimReg = sqrt(dimension());
+		int inicio_fila = (posicion.f / dimReg) * dimReg;
+		int inicio_col = (posicion.c / dimReg) * dimReg;
+
+	for (int i = inicio_fila; i < inicio_fila + dimReg; i++) {
+		for (int j = inicio_col; j < inicio_col + dimReg; j++) {
+			Posicion pos;
+			pos.f = i;
+			pos.c = j;
+			if (esta_ocupada(pos) {
+				int val = valor(pos);
+				valores[p.f][p.c][val] = false;
+				posibles[val] = false;
+				contador--;
+			}
+		}
+	}
+
 	return contador;
 }
 
@@ -160,7 +202,7 @@ bool Juego::esta_bloqueada(Posicion posicion) const {
 }
 
 void Juego::insertar_bloqueada(Posicion posicion) {
-	if (bloqueadas.cont != dimension() * dimension()){
+	if (bloqueadas.cont != dimension() * dimension()) {
 		bloqueadas.info[bloqueadas.cont] = posicion;
 		bloqueadas.cont++;
 	}
