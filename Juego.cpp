@@ -1,7 +1,7 @@
 #include "Juego.h"
 
-Juego::Juego(int dimension) {
-	tablero.set_dimension(dimension);
+Juego::Juego(int dim) {
+	tablero.set_dimension(dim);
 	vacias = tablero.casillas_vacias();
 	for (int i = 0; i < dimension() * dimension(); i++) {
 		bloqueadas.info[i].f = 0;
@@ -20,11 +20,12 @@ Juego::Juego(int dimension) {
 
 void Juego::colocar_valor_inicial(Posicion const& p, int e) {
 	tablero.colocar_valor_inicial(p, e);
+	propagar_a_casillas_afectadas(p, e, true);
 }
 
 bool Juego::asignar_valor(Posicion const& p, int e) {
 	bool ok = false;
-	if (tablero.posicion_valida(p) && tablero.esta_libre(p) && valor_valido(e) && valores[p.f][p.c][e].posible) {
+	if (tablero.posicion_valida(p) && tablero.esta_libre(p) && valor_valido(e) && valores[p.f][p.c][e].posible == true) {
 		ok = true;
 		tablero.asignar_valor(p, e);
 		propagar_a_casillas_afectadas(p, e, true); //true para saber que se ha borrado un valor en las funciones de afectar,propagar_a_casillas_afectadas, etc
@@ -52,7 +53,7 @@ void Juego::auto_completar() {
 		for (int j = 0; j < dimension(); j++) {
 			Posicion pos = { i, j };
 			if (esta_libre(pos) && valores_posibles(pos, posibles) == 1) {
-				for (int k = 0; k < dimension() + 1; i++) {
+				for (int k = 0; k < dimension() + 1; k++) {
 					if (posibles[k] == true) {
 						asignar_valor(pos, k);
 					}
@@ -77,56 +78,15 @@ void Juego::reiniciar() {
 }
 
 int Juego::valores_posibles(Posicion p, Posibles posibles) const {
-	int contador = 9;
+	int contador = 0;
 
-	//for (int i = 1; i < dimension() + 1; i++) {
-	//	if (valores[p.f][p.c][i].posible == true) {
-	//		contador++;
-	//		posibles[i] = true;
-	//	}
-	//	else {
-	//		posibles[i] = false;
-	//	}
-	//}
-	for (int i = 0; i < dimension(); i++) {
-		Posicion pos;
-		pos.f = p.f;
-		pos.c = i;
-		if (esta_ocupada(pos) {
-			int val = valor(pos);
-			valores[p.f][p.c][val] = false;
-			posibles[val] = false;
-			contador--;
+	for (int i = 1; i < dimension() + 1; i++) {
+		if (valores[p.f][p.c][i].posible == true) {
+			contador++;
+			posibles[i] = true;
 		}
-	}
-	for (int j = 0; j < dimension(); j++) {
-		Posicion pos;
-		pos.f = j;
-		pos.c = p.c;
-		if (esta_ocupada(pos) {
-			int val = valor(pos);
-			valores[p.f][p.c][val] = false;
-			posibles[val] = false;
-			contador--;
-		}
-	}
-
-
-	int dimReg = sqrt(dimension());
-		int inicio_fila = (posicion.f / dimReg) * dimReg;
-		int inicio_col = (posicion.c / dimReg) * dimReg;
-
-	for (int i = inicio_fila; i < inicio_fila + dimReg; i++) {
-		for (int j = inicio_col; j < inicio_col + dimReg; j++) {
-			Posicion pos;
-			pos.f = i;
-			pos.c = j;
-			if (esta_ocupada(pos) {
-				int val = valor(pos);
-				valores[p.f][p.c][val] = false;
-				posibles[val] = false;
-				contador--;
-			}
+		else {
+			posibles[i] = false;
 		}
 	}
 
