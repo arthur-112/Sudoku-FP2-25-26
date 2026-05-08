@@ -38,7 +38,13 @@ private:
 
 public:
 	Juego(int dimension = 0);
-
+	//--------------------------------------     Añadidos para la v2
+	bool operator<(Juego const& otro) const;
+	void numero_casillas_posibles(int v[]) const;
+	int numero_vacias() const;
+	Juego(Juego const& juego);
+	Juego& operator=(Juego const& juego);
+	//--------------------------------------
 	void colocar_valor_inicial(Posicion const& p, int e);
 
 	bool asignar_valor(Posicion const& p, int e);
