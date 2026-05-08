@@ -17,7 +17,67 @@ Juego::Juego(int dim) {
 		}
 	}
 }
+//----------------------------------------------------------------------------- LO NUEVO
+bool operator<(Juego const& otro) const {
+	bool es_menor = false;
+	int mis_vacias = numero_vacias();
+	int otras_vacias = otro.numero_vacias();
 
+	if (mis_vacias != otras_vacias) {
+		es_menor = mis_vacias < otras_vacias;
+	}
+	else {
+		int mis_posibles[10] = { 0 };
+		int otros_posibles[10] = { 0 };
+
+		numero_casillas_posibles(mis_posibles);
+		otro.numero_casillas_posibles(otros_posibles);
+
+		int i = 1;
+		bool desempate_resuelto = false;
+
+		while (i <= 9 && !desempate_resuelto) {
+			if (mis_posibles[i] != otros_posibles[i]) {
+
+				es_menor = mis_posibles[i] > otros_posibles[i];
+				desempate_resuelto = true;
+			}
+			i++;
+		}
+	}
+	return es_menor;
+}
+void Juego::numero_casillas_posibles(int v[]) const {
+	for (int f = 0; f < 9; ++f) {
+		for (int c = 0; c < 9; ++c) {
+
+			if (casilla_esta_vacia(f, c)) {
+
+				int opciones_de_esta_casilla = 0;
+				for (int k = 1; k <= 9; ++k) {
+					if (valores[f][c][k] == true) {
+						opciones_de_esta_casilla++;
+					}
+				}
+				v[opciones_de_esta_casilla]++;
+			}
+		}
+	}
+}
+int Juego::numero_vacias() const {
+	int contador = 0;
+
+	for (int f = 0; f < 9; ++f) {
+		for (int c = 0; c < 9; ++c) {
+
+			if (valores[f][c][0] == 0) {
+				contador++;
+			}
+		}
+	}
+	return contador;
+}
+//-----------------------------------------------------------------------------------
 void Juego::colocar_valor_inicial(Posicion const& p, int e) {
 	tablero.colocar_valor_inicial(p, e);
 	propagar_a_casillas_afectadas(p, e, true);
