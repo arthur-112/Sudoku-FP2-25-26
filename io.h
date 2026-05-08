@@ -1,23 +1,24 @@
 /*
-    MÛdulo que centraliza todo lo que tiene que ver con la entrada / salida
+    M√≥dulo que centraliza todo lo que tiene que ver con la entrada / salida
     - Apertura de fichero, lectura o escritura
-    - Escribir todo lo que tiene que ver con el juego (todos los cout van aquÌ)
-    - Leer todo lo que tiene que ver con el juego (todos los cin van aquÌ)
-    - En particular, aquÌ se implementa TODA la interacciÛn con el usuario / jugador
+    - Escribir todo lo que tiene que ver con el juego (todos los cout van aqu√≠)
+    - Leer todo lo que tiene que ver con el juego (todos los cin van aqu√≠)
+    - En particular, aqu√≠ se implementa TODA la interacci√≥n con el usuario / jugador
 
-    En la interfaz solo aparece lo que se usa desde el mÛdulo principal main
-    (el ˙nico que se comunica con este mÛdulo, pidiÈndole cosas relacionados con la E/S)
+    En la interfaz solo aparece lo que se usa desde el m√≥dulo principal main 
+    (el √∫nico que se comunica con este m√≥dulo, pidi√©ndole cosas relacionados con la E/S)
 */
 
 #pragma once
 
 #include "juego.h"
+#include "listaSudokus.h"
 
-// DecisiÛn del jugador
+// Decisi√≥n del jugador
 enum Accion { INDETERMINADA, ASIGNAR, QUITAR, POSIBLES, AUTO, REINICIAR, SALIR };
 
 struct Eleccion {
-    Accion accion = INDETERMINADA; // sin acciÛn v·lida elegida a˙n
+    Accion accion = INDETERMINADA; // sin acci√≥n v√°lida elegida a√∫n
     Posicion casilla;
     int valor = 0; // solo se cambia cuando se elige poner un valor en una casilla
 };
@@ -34,3 +35,15 @@ Eleccion elegir(Juego const& juego);
 Juego cargar_juego();
 
 void mostrar_error(std::string const& mensaje);
+
+// A√±adido para la versi√≥n 2: funciones que se utilizan en main (hay m√°s en la implementaci√≥n, pero no se declaran porque son "privadas")
+enum TipoPartida { NINGUNA, ANTIGUA, NUEVA, ABANDONAR };
+
+TipoPartida partida();
+
+void cargar_lista_partidas(ListaSudokus& lista);
+void cargar_lista_sudokus(ListaSudokus& lista);
+
+int elige_sudoku(ListaSudokus const& lista);
+
+
