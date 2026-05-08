@@ -7,7 +7,7 @@ using namespace std;
 
 void jugar(Juego& juego) {
 	do {
-		eleccion = elegir(juego);
+		Eleccion eleccion = elegir(juego);
 		if (eleccion.accion != SALIR) {
 			switch (eleccion.accion) {
 			case ASIGNAR:
@@ -79,13 +79,13 @@ int main() {
 			}
 			mostrar_juego(juego);
 			jugar(juego); // esencialmente el main de la versión 1
-				if (juego.numero_vacias() > 0) {
-					lista_partidas.insertar(juego);
-					cout << "Partida guardada en la lista de pendientes." << endl;
-				}
-				else {
-					cout << "¡Felicidades! Has completado el Sudoku." << endl;
-				}
+			if (juego.numero_vacias() > 0) {
+				lista_partidas.insertar(juego);
+				cout << "Partida guardada en la lista de pendientes." << endl;
+			}
+			else {
+				cout << "¡Felicidades! Has completado el Sudoku." << endl;
+			}
 		}
 	} while (tipo != ABANDONAR);
 	guardar_lista_partidas(lista_partidas);
