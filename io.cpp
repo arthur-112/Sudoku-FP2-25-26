@@ -1,11 +1,12 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
+#include <string>
+#include <cassert>
 
 #include "io.h"
 #include "colores.h"
 #include "juego.h"
-#include <cassert>
 
 using namespace std;
 
@@ -41,7 +42,7 @@ void static mostrar_columnas(int dimRegion) {
 	cout << '\n';
 }
 
-// LÌneas horizontales de las regiones de la cuadrÌcula
+// L√≠neas horizontales de las regiones de la cuadr√≠cula
 void static mostrar_linea(char esqIzda, char cruce, char esqDer, int dimRegion) {
 	cout << MARGEN << "  " << esqIzda;
 
@@ -51,10 +52,10 @@ void static mostrar_linea(char esqIzda, char cruce, char esqDer, int dimRegion) 
 	cout << string(dimRegion * TAM_CELDA, HORIZONTAL) << esqDer << '\n';
 }
 
-// Contenido de las casillas de una regiÛn de una fila
+// Contenido de las casillas de una regi√≥n de una fila
 void static mostrar_region_fila(Juego const& juego, int f, int c, int dimRegion) {
 	for (int k = 0; k < dimRegion; k++) {
-		Posicion p = { f, c + k }; // v·lida por construcciÛn
+		Posicion p = { f, c + k }; // v√°lida por construcci√≥n
 
 		int v = juego.valor(p);
 
@@ -71,7 +72,7 @@ void static mostrar_region_fila(Juego const& juego, int f, int c, int dimRegion)
 
 // Contenido de una fila de casillas
 void static mostrar_fila(Juego const& juego, int fila, int dimRegion) {
-	// margen inicial + n∫ de fila
+	// margen inicial + n¬∫ de fila
 	cout << MARGEN << fila + 1 << ' ';
 
 	int columna = 0;
@@ -99,7 +100,7 @@ void mostrar_juego(Juego const& juego) {
 	mostrar_fila(juego, 0, dimRegion);
 
 	for (int f = 1; f < dim; f++) {
-		// separaciÛn entre bloques de filas
+		// separaci√≥n entre bloques de filas
 		if (f % dimRegion == 0)
 			mostrar_linea(MID_LEFT, MID_CROSS, MID_RIGHT, dimRegion);
 
@@ -130,8 +131,8 @@ void mostrar_resultado(Juego const& juego) {
 	cout << "\n\n";
 }
 
-// Pide pos hasta que obtiene una v·lida (implementaciÛn recursiva)
-// Por eso necesita el juego como par·metro (para comprobar que es v·lida)
+// Pide pos hasta que obtiene una v√°lida (implementaci√≥n recursiva)
+// Por eso necesita el juego como par√°metro (para comprobar que es v√°lida)
 Posicion static leer_posicion(Juego const& juego, bool libre) {
 	Posicion pos;
 
@@ -139,7 +140,7 @@ Posicion static leer_posicion(Juego const& juego, bool libre) {
 	cin >> pos.f >> pos.c;
 	cout << "\n";
 
-	// ConversiÛn a representaciÛn interna est·ndar
+	// Conversi√≥n a representaci√≥n interna est√°ndar
 	pos.f--;
 	pos.c--;
 
@@ -154,7 +155,7 @@ Posicion static leer_posicion(Juego const& juego, bool libre) {
 		return leer_posicion(juego, libre);
 	}
 	else if ((libre && !juego.esta_libre(pos)) || (!libre && juego.esta_libre(pos))) {
-
+		
 		if (libre)
 			mostrar_error("La accion seleccionada requiere una casilla libre.");
 		else
@@ -166,7 +167,7 @@ Posicion static leer_posicion(Juego const& juego, bool libre) {
 		return pos;
 }
 
-int leer_valor(Juego const& juego) {
+int static leer_valor(Juego const& juego) {
 	int v;
 
 	cout << MARGEN << "Indica un valor: ";
@@ -178,11 +179,11 @@ int leer_valor(Juego const& juego) {
 
 		return leer_valor(juego);
 	}
-	else
+	else 
 		return v;
 }
 
-// El jugador elige acciÛn (y casilla sobre la que aplicarla, si procede)
+// El jugador elige acci√≥n (y casilla sobre la que aplicarla, si procede)
 Eleccion elegir(Juego const& juego) {
 	Eleccion act;
 
@@ -234,7 +235,7 @@ Eleccion elegir(Juego const& juego) {
 }
 
 // Carga de juego desde un flujo de entrada
-istream& operator>>(istream& flujoEntrada, Juego& juego) {
+istream& operator>>(istream& flujoEntrada, Juego& juego)  {
 	int dimension;
 	flujoEntrada >> dimension;
 
@@ -270,7 +271,7 @@ Juego cargar_juego() {
 
 		if (archivo.is_open()) {
 			// asumo formato correcto de los ficheros 
-			// (si no, habrÌa que hacer una funciÛn booleana que asegurara que la carga ha ido bien)
+			// (si no, habr√≠a que hacer una funci√≥n booleana que asegurara que la carga ha ido bien)
 			archivo >> juego;
 			archivo.close();
 			abierto = true;
@@ -308,14 +309,14 @@ void mostrar_valores_posibles(Juego const& juego, Posibles posible, int n) {
 }
 
 void mostrar_error(string const& mensaje) {
-	cout << MARGEN << GREEN << mensaje << "\n" << RESET;
+	cout << MARGEN << GREEN << mensaje << "\n\n" << RESET;
 }
 
 void mostrar_bloqueadas(Juego const& juego) {
 	assert(juego.bloqueado());
 
 	cout << "\n";
-	mostrar_error("Sudoku BLOQUEADO: las casillas bloqueadas son:\n");
+	mostrar_error("Sudoku BLOQUEADO: las casillas bloqueadas son:");
 
 	int n = juego.num_bloqueadas();
 
@@ -324,3 +325,191 @@ void mostrar_bloqueadas(Juego const& juego) {
 		cout << MARGEN << "(" << p.f + 1 << ", " << p.c + 1 << ")\n";
 	}
 }
+
+// Para la versi√≥n 2
+
+TipoPartida partida() {
+	TipoPartida tipo = NINGUNA;
+
+	while (tipo == NINGUNA) {
+		cout << "\n"
+			<< MARGEN << "Elige si quieres empezar un nuevo sudoku (N), continuar un sudoku (C) o abandonar (A):\n\n";
+		cout << MARGEN << "Eleccion: ";
+
+		char eleccion;
+		cin >> eleccion;
+		cout << '\n';
+
+		eleccion = toupper(eleccion);
+
+		switch (eleccion) {
+		case 'N':
+			tipo = NUEVA;
+			break;
+		case 'C':
+			tipo = ANTIGUA;
+			break;
+		case 'A':
+			tipo = ABANDONAR;
+			break;
+		default:
+			mostrar_error("Eleccion invalida.");
+			break;
+		}
+	}
+
+	return tipo;
+}
+
+Juego static cargar_juego(string const& nombreArchivo) {
+	Juego juego;
+
+	ifstream archivo;
+	archivo.open(nombreArchivo.c_str());
+
+	if (archivo.is_open()) {
+		// asumo formato correcto de los ficheros 
+		archivo >> juego;
+		archivo.close();
+	}
+	else
+		mostrar_error("Archivo no encontrado.");
+	
+	return juego;
+}
+
+void cargar_lista_partidas(ListaSudokus& lista) {
+	ifstream archivo;
+	archivo.open("lista_partidas.txt");
+
+	if (archivo.is_open()) {
+		int num_partidas;
+		archivo >> num_partidas;
+
+		for (int i = 0; i < num_partidas; i++) {
+			Juego juego;
+			archivo >> juego;
+
+			int f, c, valor;
+			archivo >> f;
+
+			while (f != -1) {
+				archivo >> c >> valor;
+				juego.asignar_valor({ f, c }, valor);
+				archivo >> f;
+			}
+
+			lista.insertar(juego);
+		}
+
+		archivo.close();
+	}
+	else
+		mostrar_error("Lista de partidas no encontrada.");
+}
+
+void cargar_lista_sudokus(ListaSudokus& lista) {
+	ifstream archivo;
+	archivo.open("lista_sudokus.txt");
+
+	if (archivo.is_open()) {
+		int num_sudokus;
+		archivo >> num_sudokus;
+
+		string dummy;
+		getline(archivo, dummy); // leer el resto de la l√≠nea (contenido irrelevante)
+
+		for (int i = 0; i < num_sudokus; i++) {
+			string nombre;
+			getline(archivo, nombre);
+			
+			// Asumo que existen todos los ficheros listados
+			Juego juego = cargar_juego(nombre);
+
+			lista.insertar(juego);
+		}
+
+		archivo.close();
+	}
+	else
+		mostrar_error("Lista de sudokus no encontrada.");
+}
+
+void static mostrar_lista(ListaSudokus const& lista) {
+	int num_elems = lista.num_elems();
+
+	for (int i = 0; i < num_elems; i++) {
+		Juego sudoku = lista[i];
+		cout << RED << MARGEN << i + 1 << " - Sudoku con " << sudoku.numero_vacias() << " casillas vacias" << RESET << '\n';
+
+		int valores[MAX_DIM + 1];
+		sudoku.numero_casillas_posibles(valores);
+
+		for (int i = 1; i <= MAX_DIM; i++)
+			cout << MARGEN << MARGEN << MARGEN << "+ casillas con " << i << " valores posibles: " << valores[i] << '\n';
+
+		cout << '\n';
+	}
+}
+
+int elige_sudoku(ListaSudokus const& lista) {
+	int num_elems = lista.num_elems();
+	int op;
+
+	do {
+		mostrar_lista(lista);
+		cout << MARGEN << "Elige un numero de sudoku: ";
+		cin >> op;
+		cout << "\n\n";
+
+	} while (op < 1 || op > num_elems);
+
+	return op - 1;
+}
+
+void static guardar_partida(ofstream& archivo, Juego const& juego) {
+	int dim = juego.dimension();
+
+	archivo << dim << '\n';
+
+	for (int i = 0; i < dim; i++) {
+		for (int j = 0; j < dim; j++) {
+			Posicion p = { i, j };
+
+			if (juego.es_inicial(p)) 
+				archivo << juego.valor(p) << ' ';
+			else 
+				archivo << "0 ";
+		}
+		archivo << '\n';
+	}
+
+	for (int i = 0; i < dim; i++) {
+		for (int j = 0; j < dim; j++) {
+			Posicion p = { i, j };
+
+			if (juego.esta_ocupada(p))
+				archivo << i << ' ' << j << ' ' << juego.valor(p) << '\n';
+		}
+	}
+
+	archivo << "-1\n";
+}
+
+void static guardar_lista_partidas(ListaSudokus const& lista) {
+	ofstream archivo;
+	archivo.open("lista_partidas.txt");
+
+	if (archivo.is_open()) {
+		int n = lista.num_elems();
+		archivo << n << '\n';
+
+		for (int i = 0; i < n; i++) 
+			guardar_partida(archivo, lista[i]);
+
+		archivo.close();
+	}
+	else
+		mostrar_error("Lista de partidas no encontrada.");
+}
+
