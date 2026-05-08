@@ -5,7 +5,7 @@
     - Leer todo lo que tiene que ver con el juego (todos los cin van aquí)
     - En particular, aquí se implementa TODA la interacción con el usuario / jugador
 
-    En la interfaz solo aparece lo que se usa desde el módulo principal main 
+    En la interfaz solo aparece lo que se usa desde el módulo principal main
     (el único que se comunica con este módulo, pidiéndole cosas relacionados con la E/S)
 */
 
@@ -43,7 +43,7 @@ TipoPartida partida();
 
 void cargar_lista_partidas(ListaSudokus& lista);
 void cargar_lista_sudokus(ListaSudokus& lista);
-
+void guardar_lista_partidas(ListaSudokus const& lista);
 int elige_sudoku(ListaSudokus const& lista);
 
 
