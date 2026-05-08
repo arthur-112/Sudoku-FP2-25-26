@@ -17,8 +17,7 @@ Juego::Juego(int dim) {
 		}
 	}
 }
-//----------------------------------------------------------------------------- LO NUEVO
-bool operator<(Juego const& otro) const {
+bool Juego::operator<(Juego const& otro) const {
 	bool es_menor = false;
 	int mis_vacias = numero_vacias();
 	int otras_vacias = otro.numero_vacias();
@@ -27,8 +26,8 @@ bool operator<(Juego const& otro) const {
 		es_menor = mis_vacias < otras_vacias;
 	}
 	else {
-		int mis_posibles[10] = { 0 };
-		int otros_posibles[10] = { 0 };
+		int mis_posibles[10] = {0};
+		int otros_posibles[10] = {0};
 
 		numero_casillas_posibles(mis_posibles);
 		otro.numero_casillas_posibles(otros_posibles);
@@ -48,14 +47,16 @@ bool operator<(Juego const& otro) const {
 	return es_menor;
 }
 void Juego::numero_casillas_posibles(int v[]) const {
+	Posicion p;
 	for (int f = 0; f < 9; ++f) {
 		for (int c = 0; c < 9; ++c) {
-
-			if (casilla_esta_vacia(f, c)) {
+			p.f = f;
+			p.c = c;
+			if (esta_libre(p)) {
 
 				int opciones_de_esta_casilla = 0;
 				for (int k = 1; k <= 9; ++k) {
-					if (valores[f][c][k] == true) {
+					if (valores[f][c][k].posible) {
 						opciones_de_esta_casilla++;
 					}
 				}
@@ -70,14 +71,36 @@ int Juego::numero_vacias() const {
 	for (int f = 0; f < 9; ++f) {
 		for (int c = 0; c < 9; ++c) {
 
-			if (valores[f][c][0] == 0) {
+			if (esta_libre({f,c})) {
 				contador++;
 			}
 		}
 	}
 	return contador;
 }
-//-----------------------------------------------------------------------------------
+Juego::Juego(Juego const& juego) {
+	for (int f = 0; f < 9; ++f) {
+		for (int c = 0; c < 9; ++c) {
+			for (int k = 0; k < 10; ++k) {
+				this->valores[f][c][k] = juego.valores[f][c][k];
+			}
+		}
+	}
+}
+Juego& Juego::operator=(Juego const& juego) {
+	if (this != &juego) {
+
+		for (int f = 0; f < 9; ++f) {
+			for (int c = 0; c < 9; ++c) {
+				for (int k = 0; k < 10; ++k) {
+					this->valores[f][c][k] = juego.valores[f][c][k];
+				}
+			}
+		}
+	}
+	return *this;
+}
+
 void Juego::colocar_valor_inicial(Posicion const& p, int e) {
 	tablero.colocar_valor_inicial(p, e);
 	propagar_a_casillas_afectadas(p, e, true);
